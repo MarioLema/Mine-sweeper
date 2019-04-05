@@ -41,3 +41,29 @@ header p {
   margin: 1rem;
   position: relative;
 }
+
+#board {
+	border: solid #bcbcbc 10px;
+	display: grid;
+	margin: auto;
+}
+.cell {
+	border: outset #b9b9b9 5px;
+	background: lightgrey;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 1.3rem;
+}
+.cell:hover {
+	background: #b1b1b1;
+}
+.reveal-mine, .reveal-mine:hover{
+  background: #ab0000;
+  border: solid grey 1px;
+}
+.reveal-empty, reveal-empty:hover {
+	background: #bdbdbd;
+	border: solid #b1b1b1 1px;
+}
