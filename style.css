@@ -18,7 +18,7 @@ body {
 *::before {
   margin: 0;
   padding: 0;
-  box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 header {
@@ -43,12 +43,12 @@ header p {
 }
 
 #board {
-	border: solid #bcbcbc 10px;
+	border: inset #d5d5d5 4px;
 	display: grid;
 	margin: auto;
 }
 .cell {
-	border: outset #b9b9b9 5px;
+	border: outset #b9b9b9 4px;
 	background: lightgrey;
 	text-align: center;
 	display: flex;
@@ -66,4 +66,28 @@ header p {
 .reveal-empty, reveal-empty:hover {
 	background: #bdbdbd;
 	border: solid #b1b1b1 1px;
+}
+
+
+.game-container {
+	padding: 10px;
+	background: #bdbdbd;
+	width: max-content;
+	margin: auto;
+	border: outset #b1b1b1 4px;
+}
+.game-display {
+	height: 5rem;
+	width: 100%;
+	background: #c0c0c0;
+	border: inset #d5d5d5 5px;
+	margin-bottom: 0.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+.smiley{
+	font-size: 1.5rem;
+	border: outset #b9b9b9 3px;
+	padding: 0.2rem;
 }
