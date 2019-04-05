@@ -1,0 +1,43 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  background-color: #ffcfdf;
+  background-image: linear-gradient(315deg, #ffcfdf 0%, #b0f3f1 74%);
+  min-height: 100vh;
+
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: content-box;
+}
+
+header {
+  margin: 2rem 0;
+}
+
+header h1 {
+  font-family: 'Gruppo', cursive;
+  margin-bottom: 2rem;
+  font-size: 4rem;
+}
+
+header p {
+  width: 35rem;
+  margin: auto;
+}
+
+.handle-button {
+  padding: 1rem;
+  margin: 1rem;
+  position: relative;
+}
