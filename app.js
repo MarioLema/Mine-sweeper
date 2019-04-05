@@ -3,6 +3,7 @@ const DATA = {
     boardArr: [],
     emptyCell: [],
     mineCell: [],
+    revealed: [],
     cols: 10,
     rows: 10,
     mineRate: 1.5,
@@ -38,7 +39,11 @@ const VIEW = {
     displayEmpty(neighbours, id){
         let cell = document.getElementById(`cell-${id}`);
         cell.classList.add(`reveal-empty`);
-        neighbours > 0 ? cell.innerHTML = `` : cell.innerHTML = neighbours;
+        if(neighbours > 0){
+            cell.innerHTML = neighbours;
+        }else{
+            cell.innerHTML = ` `;
+        }
     },
     // addClass(class){},
 
@@ -64,7 +69,7 @@ const MODIFIER = {
 
     turn(){
         let id = event.target.id;
-        let index = id.slice(5);
+        let index = Number(id.slice(5));
 
         if(this.checkMine(index)){
             for(let i = 0; i < DATA.mineCell.length; i++){
@@ -76,8 +81,44 @@ const MODIFIER = {
         }
     },
 
-    findNeighbours(){
+    findNeighbours(i){
+        let checked = [];
+
+        function checkCell(index){
+            let topBound = 0;
+            let bottomBound = DATA.boardArr.length - 1;
+            let leftBound = Math.floor(index/DATA.rows) * DATA.rows ;
+            let rightBound = (Math.ceil(index/DATA.rows) * DATA.rows ) - 1;
+            if(index < topBound || index > bottomBound || index < leftBound || index > rightBound) return; //if the index number is outside of the boundaries of the grid row or column
+            if(checked.indexOf(index) === -1 ) { checked.push(index) } else return; //if it has not been checked before, push it to the array, else return
+            if(DATA.revealed.indexOf(index) !== -1 || DATA.mineCell.indexOf(index) !== -1) return; //if it was revealed previously or it is a mine return
+
+
+            let neighbours = [index - 1, index + 1, index - DATA.rows, index - DATA.rows - 1, index - DATA.rows + 1, index + DATA.rows, index + DATA.rows - 1, index + DATA.rows + 1];
+            let mineCount = MODIFIER.mineCount(neighbours);
+            DATA.revealed.push(index);
+            VIEW.displayEmpty(mineCount, index);
+
+            
+
+            for (let i = 0; i < neighbours.length; i++){
+                checkCell(neighbours[i]);
+            }
+        }
+
+        checkCell(i);
+    },
+
+    checkCell(index){
         
+    },
+
+    mineCount(neighArr){
+        let count = 0;
+        for(let i = 0; i < neighArr.length; i++){
+            if(DATA.boardArr[neighArr[i]]) count++
+        }
+        return count;
     },
 
     checkMine(index){
@@ -118,202 +159,3 @@ document.getElementById(`board`).addEventListener(`click`, MODIFIER.turn, false)
 
 MODIFIER.populateBoardArr();
 VIEW.generateBoard();
-console.log(DATA.boardArr);
-
-//=============================================================================================================
-//=============================================================================================================
-
-// const board = document.getElementById(`board`);
-// const cols = 10;
-// const rows = 10;
-
-
-// //needs to call a document fragment as opposed to add each time
-// function createBoard(rows,cols){
-//     board.innerHTML = ``;
-//     for(let i = 0; i < rows; i++){
-//         const row = document.createElement(`div`);
-//         row.classList.add(`row`);
-//         for(let j = 0; j < cols; j++){
-//             const col = document.createElement(`div`);
-//             col.classList.add('col','hidden');
-//             col.setAttribute(`data-col`, j);
-//             col.setAttribute(`data-row`, i);
-//             if(Math.random() < 0.1){
-//                 col.classList.add('mine');
-//             }
-//             row.appendChild(col);
-//         }
-//         board.appendChild(row);
-//     }
-// }
-
-
-
-// function restart(){
-//     //all event listeners will go...
-//     createBoard(10,10);
-// }
-
-// function gameOver(isWin){
-//     let message = null;
-//     if(isWin){
-//         message = `YOU WON!`;
-//     }else{
-//         message = `YOU LOST!`;
-//     }
-//         alert(message);
-//         restart();
-// }
-
-// createBoard(cols, rows);
-
-// function reveal(oi, oj){
-//     const seen = {};
-
-//     function helper(i,j){
-//         if( i >= rows || j >= cols || i < 0 || j < 0) return;
-
-//         const key = `${i} ${j}`;
-//         if(seen[key]) return;
-
-//         const cell = document.querySelector(`.data.hidden[data-row=${i}][data-col=${j}]`);
-//     }
-
-//     helper(oi,oj);
-// }
-
-// let cells = document.querySelectorAll(`.hidden`);
-// cells.forEach( x => x.addEventListener(`click`, function(){
-//     let target = event.target;
-//     row = target.data('row');
-//     col = target.data(`col`);
-//     if(target.classList.contains(`mine`)){
-//         gameOver(false);
-//         restart();
-//     }else{
-//         reveal(row,col);
-//     }
-// }))
-
-// //============================================================================================================================================================
-// //============================================================================================================================================================
-// const $board = $('#board');
-// const ROWS = 10;
-// const COLS = 10;
-
-// function createBoard(rows, cols) {
-//   $board.empty();
-//   for (let i = 0; i < rows; i++) {
-//     const $row = $('<div>').addClass('row');
-//     for (let j = 0; j < cols; j++) {
-//       const $col = $('<div>')
-//         .addClass('col hidden')
-//         .attr('data-row', i)
-//         .attr('data-col', j);
-//       if (Math.random() < 0.1) {
-//         $col.addClass('mine');
-//       }
-//       $row.append($col);
-//     }
-//     $board.append($row);
-//   }
-// }
-
-// function restart() {
-//   createBoard(ROWS, COLS);
-// }
-
-// function gameOver(isWin) {
-//   let message = null;
-//   let icon = null;
-//   if (isWin) {
-//     message = 'YOU WON!';
-//     icon = 'fa fa-flag';
-//   } else {
-//     message = 'YOU LOST!';
-//     icon = 'fa fa-bomb';
-//   }
-//   $('.col.mine').append(
-//     $('<i>').addClass(icon)
-//   );
-//   $('.col:not(.mine)')
-//     .html(function() {
-//       const $cell = $(this);
-//       const count = getMineCount(
-//         $cell.data('row'),
-//         $cell.data('col'),
-//       );
-//       return count === 0 ? '' : count;
-//     })
-//   $('.col.hidden').removeClass('hidden');
-//   setTimeout(function() {
-//     alert(message);
-//     restart();
-//   }, 1000);
-// }
-
-// function reveal(oi, oj) {
-//   const seen = {};
-
-//   function helper(i, j) {
-//     if (i >= ROWS || j >= COLS || i < 0 || j < 0) return;
-//     const key = `${i} ${j}`
-//     if (seen[key]) return;
-//     const $cell =
-//       $(`.col.hidden[data-row=${i}][data-col=${j}]`);
-//     const mineCount = getMineCount(i, j);
-//     if (
-//       !$cell.hasClass('hidden') ||
-//       $cell.hasClass('mine')
-//     ) {
-//       return;
-//     }
-
-//     $cell.removeClass('hidden');
-
-//     if (mineCount) {
-//       $cell.text(mineCount);
-//       return;
-//     }
-    
-//     for (let di = -1; di <= 1; di++) {
-//       for (let dj = -1; dj <= 1; dj++) {
-//         helper(i + di, j + dj);
-//       }      
-//     }
-//   }
-
-//   helper(oi, oj);
-// }
-
-// function getMineCount(i, j) {
-//   let count = 0;
-//   for (let di = -1; di <= 1; di++) {
-//     for (let dj = -1; dj <= 1; dj++) {
-//       const ni = i + di;
-//       const nj = j + dj;
-//       if (ni >= ROWS || nj >= COLS || nj < 0 || ni < 0) continue;
-//       const $cell =
-//         $(`.col.hidden[data-row=${ni}][data-col=${nj}]`);
-//       if ($cell.hasClass('mine')) count++;
-//     }      
-//   }
-//   return count;
-// }
-
-// $board.on('click', '.col.hidden', function() {
-//   const $cell = $(this);
-//   const row = $cell.data('row');
-//   const col = $cell.data('col');
-  
-//   if ($cell.hasClass('mine')) {
-//     gameOver(false);
-//   } else {
-//     reveal(row, col);
-//     const isGameOver = $('.col.hidden').length === $('.col.mine').length
-//     if (isGameOver) gameOver(true);
-//   }
-// })
-
-// restart();
