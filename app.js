@@ -244,7 +244,6 @@ const MODIFIER = {
         let bottomBound = DATA.boardArr.length - 1;
         let leftBound = Math.floor(index / DATA.rows) * DATA.rows;
         let rightBound = (Math.floor((index + DATA.rows) / DATA.rows) * DATA.rows) - 1;
-
         let neighbours = [index - DATA.rows - 1, index - DATA.rows, index - DATA.rows + 1, index - 1, index + 1, index + DATA.rows - 1, index + DATA.rows, index + DATA.rows + 1];
         return {
             grid1: neighbours[0] < topBound || neighbours[0] < leftBound - DATA.rows ? false : neighbours[0], //index - DATA.rows - 1 
@@ -270,7 +269,7 @@ const MODIFIER = {
 
     checkMine(index) {
         return DATA.boardArr[index] ? true : false;
-    }
+    },
 
     //================PLAY GAME METHODS==================
     //===================================================
@@ -284,7 +283,40 @@ const MODIFIER = {
     //================UTILITY METHODS==================
     //===================================================
 
-
+changeRows(){
+    value = event.target.value;
+    if(value => 2 && value <= 500){
+DATA.rows = value;
+    }
+},
+changeCols(){
+    value = event.target.value;
+    if(value => 2 && value <= 500){
+DATA.cols = value;
+    }
+},
+changeTime(){
+    value = event.target.value;
+    if(value => 10 && value <= 500){
+DATA.timeSet = value;
+    }
+},
+changeDifficulty(){
+    mode = event.target.id;
+    switch(mode) {
+        case `easy`:
+          DATA.mineRate = 1.9;
+          break;
+        case `normal`:
+          DATA.mineRate = 1.5;
+          break;
+          case `hard`:
+          DATA.mineRate = 1.3;
+          break;
+        default:
+          return;
+      } 
+},
 
 
     //================LISTENER METHODS==================
@@ -300,8 +332,12 @@ MODIFIER.resetGame = MODIFIER.resetGame.bind(MODIFIER);
 //========================CLICK EVENTS============================================
 document.getElementById(`board`).addEventListener(`click`, MODIFIER.turn, false);
 document.getElementById(`reset-game`).addEventListener(`click`, MODIFIER.resetGame, false);
-document.getElementById('flag-mode').addEventListener(`click`, MODIFIER.actFlagMode, false);
-
+document.getElementById(`commit-game`).addEventListener(`click`, MODIFIER.resetGame, false);
+document.getElementById(`flag-mode`).addEventListener(`click`, MODIFIER.actFlagMode, false);
+document.getElementById(`rows`).addEventListener(`change`, MODIFIER.changeRows, false);
+document.getElementById(`cols`).addEventListener(`change`, MODIFIER.changeCols, false);
+document.getElementById(`time`).addEventListener(`change`, MODIFIER.changeTime, false);
+document.querySelector(`.difficulty-options`).addEventListener(`click`, MODIFIER.changeDifficulty, false);
 
 MODIFIER.populateBoardArr();
 VIEW.generateBoard();
