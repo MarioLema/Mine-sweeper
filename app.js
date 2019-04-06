@@ -92,26 +92,32 @@ const MODIFIER = {
         let checked = [];
 
         function checkCell(index) {
-            let topBound = 0;
-            let bottomBound = DATA.boardArr.length - 1;
-            let leftBound = Math.floor(index / DATA.rows) * DATA.rows;
-            let rightBound = DATA.rows + (Math.ceil(index / DATA.rows) * DATA.rows) - 1;
+            // let topBound = 0;
+            // let bottomBound = DATA.boardArr.length - 1;
+            // let leftBound = Math.floor(index / DATA.rows) * DATA.rows;
+            // let rightBound = (Math.floor((index + DATA.rows)/ DATA.rows) * DATA.rows ) - 1;
 
-            if (index < topBound || index > bottomBound || index < leftBound || index > rightBound) return; //if the index number is outside of the boundaries of the grid row or column
+            // if (index < topBound || index > bottomBound || index < leftBound || index > rightBound) return; //if the index number is outside of the boundaries of the grid row or column
             if (checked.indexOf(index) === -1) {
                 checked.push(index)
             } else return; //if it has not been checked before, push it to the array, else return
             if (DATA.revealed.indexOf(index) !== -1 || DATA.mineCell.indexOf(index) !== -1) return; //if it was revealed previously or it is a mine return
 
 
-            let neighbours = [index - 1, index + 1, index - DATA.rows, index - DATA.rows - 1, index - DATA.rows + 1, index + DATA.rows, index + DATA.rows - 1, index + DATA.rows + 1];
+            //let neighbours = [index - 1, index + 1, index - DATA.rows, index - DATA.rows - 1, index - DATA.rows + 1, index + DATA.rows, index + DATA.rows - 1, index + DATA.rows + 1];
+            let neighbours = MODIFIER.adjacentCells(index);
             let mineCount = MODIFIER.mineCount(neighbours);
             DATA.revealed.push(index);
             VIEW.displayEmpty(mineCount, index);
 
+
             if (mineCount === 0) {
-                for (let i = 0; i < neighbours.length; i++) {
-                    checkCell(neighbours[i]);
+                // for (let i = 0; i < neighbours.length; i++) {
+                //     checkCell(neighbours[i]);
+                // }
+
+                for(let cell in neighbours){
+                    if(neighbours[cell]) checkCell(neighbours[cell]);
                 }
             }
 
@@ -120,10 +126,34 @@ const MODIFIER = {
         checkCell(i);
     },
 
+    adjacentCells(index){
+        let topBound = 0;
+        let bottomBound = DATA.boardArr.length - 1;
+        let leftBound = Math.floor(index / DATA.rows) * DATA.rows;
+        let rightBound = (Math.floor((index + DATA.rows)/ DATA.rows) * DATA.rows ) - 1;
+        
+        let neighbours = [index - DATA.rows - 1, index - DATA.rows, index - DATA.rows + 1, index - 1, index + 1,index + DATA.rows - 1,index + DATA.rows, index + DATA.rows + 1];
+        return {
+            grid1: neighbours[0] < topBound    || neighbours[0] < leftBound - DATA.rows  ? false : neighbours[0], //index - DATA.rows - 1 
+            grid2: neighbours[1] < topBound                                              ? false : neighbours[1], //index - DATA.rows
+            grid3: neighbours[2] < topBound    || neighbours[2] > rightBound - DATA.rows ? false : neighbours[2], //index - DATA.rows + 1 
+            grid4: neighbours[3] < leftBound                                             ? false : neighbours[3], //index - 1 
+            grid6: neighbours[4] > rightBound                                            ? false : neighbours[4], //index + 1 
+            grid7: neighbours[5] > bottomBound || neighbours[5] < leftBound + DATA.rows  ? false : neighbours[5], //index + DATA.rows - 1
+            grid8: neighbours[6] > bottomBound                                           ? false : neighbours[6], //index + DATA.rows
+            grid9: neighbours[7] > bottomBound || neighbours[7] > rightBound + DATA.rows ? false : neighbours[7],//index + DATA.rows + 1
+        }
+    },
+
     mineCount(neighArr) {
         let count = 0;
-        for (let i = 0; i < neighArr.length; i++) {
-            if (DATA.boardArr[neighArr[i]]) count++
+        // for (let i = 0; i < neighArr.length; i++) {
+        //     if (DATA.boardArr[neighArr[i]]) count++
+        // }
+        for( let cell in neighArr){
+            if(neighArr[cell]){
+                if(DATA.boardArr[neighArr[cell]]) count++;
+            }
         }
         return count;
     },
