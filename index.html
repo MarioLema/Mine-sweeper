@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>MINE SWEEPER</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Gruppo" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Iceland" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="screen" href="style.css">
 
 </head>
@@ -16,16 +16,38 @@
         <h1>MINE SWEEPER</h1>
         <p>This is a simple memory game. There are 65 different faces to match so you can play again and again. You are
             also against the clock, make sure you work fast.</p>
-        <div>
-            <button class="handle-button" id="reset-game">RESET GAME</button>
-        </div>
+            <div class="options-container">
+                <div class="options">
+                    <label for="rows">ROWS</label>
+                    <input id="rows" type="number" name="rows" value="10" min="2" max="500">
+                </div>
+                <div class="options">
+                    <label for="cols">COLUMNS</label>
+                    <input id="cols" type="number" name="cols" value="10" min="2" max="500">
+                </div>
+                <div class="options">
+                    <label for="time">SECONDS</label>
+                    <input id="time" type="number" name="time" value="100" min="10" max="500">
+                </div>
+                <div class="difficulty-options">
+                    <h5>DIFFICULTY</h5>
+                    <input id="easy" type="radio" name="difficulty" value="easy">
+                    <label for="easy">EASY</label></br>
+                    <input id="normal" type="radio" name="difficulty" value="normal" checked>
+                    <label for="normal">NORMAL</label></br>
+                    <input id="hard" type="radio" name="difficulty" value="hard">
+                    <label for="hard">HARD</label>
+
+                </div>
+            </div>
 
     </header>
     <section class="game-container">
         <div class="game-display">
-                <div>TMER</div>
-                <div class="smiley">🙂</div>
-                <div>BOMBS</div>
+            <div id="flag-mode">🚩</div>
+            <div class="game-counter" id="bombs-display">999</div>
+            <div id="reset-game" class="smiley">🙂</div>
+            <div class="game-counter" id="time-display">500</div>
         </div>
         <div id="board">
 
