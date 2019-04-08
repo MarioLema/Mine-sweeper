@@ -14,33 +14,34 @@
 <body>
     <header>
         <h1>MINE SWEEPER</h1>
-        <p>This is a simple memory game. There are 65 different faces to match so you can play again and again. You are
-            also against the clock, make sure you work fast.</p>
-            <div class="options-container">
-                <div class="options">
-                    <label for="rows">ROWS</label>
-                    <input id="rows" type="number" name="rows" value="10" min="2" max="500">
-                </div>
-                <div class="options">
-                    <label for="cols">COLUMNS</label>
-                    <input id="cols" type="number" name="cols" value="10" min="2" max="500">
-                </div>
-                <div class="options">
-                    <label for="time">SECONDS</label>
-                    <input id="time" type="number" name="time" value="100" min="10" max="500">
-                </div>
-                <div class="difficulty-options">
-                    <h5>DIFFICULTY</h5>
-                    <input id="easy" type="radio" name="difficulty" value="easy">
-                    <label for="easy">EASY</label></br>
-                    <input id="normal" type="radio" name="difficulty" value="normal" checked>
-                    <label for="normal">NORMAL</label></br>
-                    <input id="hard" type="radio" name="difficulty" value="hard">
-                    <label for="hard">HARD</label>
-
-                </div>
+        <p>The game replicates the functionality of the original Windows MineSweeper, only here it is build with a one-dimensional array and CSS grid.</p>
+        <p>You can use the options to customize the game to your liking.</p>
+        <p>To avoid browser support issues, tagging a bomb is done with the "tagmode button". The mode will stay active until the button is unclicked again.</p>
+        <div class="options-container">
+            <div class="options">
+                <label for="rows">ROWS</label>
+                <input id="rows" type="number" name="rows" value="10" min="2" max="500">
             </div>
-            <button id="commit-game">COMMIT</button>
+            <div class="options">
+                <label for="cols">COLUMNS</label>
+                <input id="cols" type="number" name="cols" value="10" min="2" max="500">
+            </div>
+            <div class="options">
+                <label for="time">SECONDS</label>
+                <input id="time" type="number" name="time" value="100" min="10" max="500">
+            </div>
+            <div class="difficulty-options">
+                <h5>DIFFICULTY</h5>
+                <input id="easy" type="radio" name="difficulty" value="easy">
+                <label for="easy">EASY</label></br>
+                <input id="normal" type="radio" name="difficulty" value="normal" checked>
+                <label for="normal">NORMAL</label></br>
+                <input id="hard" type="radio" name="difficulty" value="hard">
+                <label for="hard">HARD</label>
+
+            </div>
+        </div>
+        <button id="commit-game">COMMIT</button>
     </header>
     <section class="game-container">
         <div class="game-display">
